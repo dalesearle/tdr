@@ -16,6 +16,17 @@ const raidTimeOverhead int64 = int64(time.Second * 15)
 func NewSector(x, y int, name string) *Sector {
 	return &Sector{x, y, name}
 }
+func (origin *Sector) GetX() int {
+	return origin.x
+}
+
+func (origin *Sector) GetY() int {
+	return origin.y
+}
+
+func (origin *Sector) GetName() string {
+	return origin.name
+}
 
 func (origin *Sector) DistanceTo(destination *Sector) float64 {
 	return math.Sqrt(math.Pow(float64(destination.x-origin.x), 2) + math.Pow(float64(destination.y-origin.y), 2))
