@@ -2,9 +2,10 @@ package api_test
 
 import (
 	"math"
-	"tdr/api"
 	"testing"
 	"time"
+
+	"github.com/dalesearle/tdr/api"
 )
 
 var mainSector = api.NewSector(570, -3094, "Main")

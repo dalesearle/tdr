@@ -2,25 +2,44 @@ package api
 
 import "time"
 
-type TravelStats struct {
+type TravelStat struct {
 	x          int
 	y          int
 	name       string
 	travelTime time.Duration
 }
 
-func NewTravelStats(x, y int, name string, travelTime time.Duration) *TravelStats {
-	return &TravelStats{x, y, name, travelTime}
+type TravelStats []TravelStat
+
+func NewTravelStats(x, y int, name string, travelTime time.Duration) *TravelStat {
+	return &TravelStat{x, y, name, travelTime}
 }
 
-func (travelStats *TravelStats) GetX() int {
+func (travelStats *TravelStat) GetX() int {
 	return travelStats.x
 }
 
-func (travelStats *TravelStats) GetY() int {
+func (travelStats *TravelStat) GetY() int {
 	return travelStats.y
 }
 
-func (travelStats *TravelStats) GetName() string {
+func (travelStats *TravelStat) GetName() string {
 	return travelStats.name
+}
+
+func (travelStats *TravelStat) GetTravelTime() time.Duration {
+	return travelStats.travelTime
+}
+
+func NewTravelStatsSlice() TravelStats {
+	return make(TravelStats, 0)
+}
+func (ts TravelStats) Len() int {
+	return len(ts)
+}
+func (ts TravelStats) Swap(i, j int) {
+	ts[i], ts[j] = ts[j], ts[i]
+}
+func (ts TravelStats) Less(i, j int) bool {
+	return ts[i].GetTravelTime() < ts[j].GetTravelTime()
 }

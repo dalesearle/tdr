@@ -9,6 +9,8 @@ import (
 
 	"time"
 
+	"sort"
+
 	"github.com/dalesearle/tdr/api"
 )
 
@@ -65,7 +67,7 @@ func createTargetSectors(sectorData []string) []api.Sector {
 		x := atoi(sd[0])
 		y := atoi(sd[1])
 
-		sectors = append(sectors, *api.NewSector(x, y, sd[2]))
+		sectors = append(sectors, *api.NewSector(x, y, strings.Trim(sd[2], "\n")))
 	}
 	return sectors
 }
@@ -78,16 +80,17 @@ func atoi(str string) int {
 	return igr
 }
 
-func createTravelStats(baseSector api.Sector, targetSectors []api.Sector) []api.TravelStats {
-	travelStats := []api.TravelStats{}
+func createTravelStats(baseSector api.Sector, targetSectors []api.Sector) api.TravelStats {
+	travelStats := api.NewTravelStatsSlice()
 	for _, targetSector := range targetSectors {
 		travelTime := time.Duration(baseSector.TravelTimeTo(&targetSector, 480))
 		travelStats = append(travelStats, *api.NewTravelStats(targetSector.GetX(), targetSector.GetY(), targetSector.GetName(), travelTime))
 	}
+	sort.Sort(travelStats)
 	return travelStats
 }
 
-func writeTravelStats(travelStats []api.TravelStats) {
+func writeTravelStats(travelStats api.TravelStats) {
 	path := os.Args[4] + "/tdr_travel.csv"
 	data, err := os.Create(path)
 	if err != nil {
@@ -95,5 +98,24 @@ func writeTravelStats(travelStats []api.TravelStats) {
 	}
 	defer data.Close()
 	writer := bufio.NewWriter(data)
-	writer.WriteString("test")
+	writeStatsHeader(writer)
+	for _, stat := range travelStats {
+		writeTravelStat(writer, &stat)
+	}
+	writer.Flush()
+}
+
+func writeStatsHeader(writer *bufio.Writer) {
+	writer.WriteString("X,Y,Name,Travel Time\n")
+}
+
+func writeTravelStat(writer *bufio.Writer, travelStat *api.TravelStat) {
+	writer.WriteString(strconv.Itoa(travelStat.GetX()))
+	writer.WriteString(",")
+	writer.WriteString(strconv.Itoa(travelStat.GetY()))
+	writer.WriteString(",")
+	writer.WriteString(travelStat.GetName())
+	writer.WriteString(",")
+	writer.WriteString(travelStat.GetTravelTime().String())
+	writer.WriteString("\n")
 }
