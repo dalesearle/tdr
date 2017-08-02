@@ -1,12 +1,19 @@
+label{
+    display: inline-block;
+    width: 80px;
+    text-align: right;
+}
 input{
     background-color: white;
     color: black;
     border-radius:6px;
-    padding-left: 4px;
+    margin: 0px 0px 5px 5px;
+    padding-left: 3px;
 }
 
 fieldset{
-    text-align: right;
+    text-align: center;
     border-radius:12px;
     max-width:300px;
+    margin: auto;
 }
