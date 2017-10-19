@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Siege Raider</title>
+    <link rel="stylesheet" type="text/css" href="siege.css">
+</head>
+<body>
+<form action="/create_account" method="post">
+    <fieldset>
+        <legend align="center">Account Information</legend>
+        <label class="err_msg">{{.ErrorMsg}}</label>
+        <input type="hidden" name="create_account" value="{{.Create}}">
+        <label>First Name:</label>
+        <input autocomplete="on" autofocus="on" name="fname" required type="text" style="width: 50%" ><br>
+        <label>Last Name:</label>
+        <input autocomplete="on" autofocus="on" name="lname" required type="text" style="width: 50%"><br>
+        <label>Email:</label>
+        <input autocomplete="on" autofocus="on" name="email" required type="text" style="width: 50%" value="{{.Email}}"><br>
+        <label>Password:</label>
+        <input autocomplete="on" name="pwd" required type="password" style="width: 50%" value="{{.Pwd}}"><br>
+        <input type="submit"  value="Create Account" style="width: 85%">
+    </fieldset>
+</form>
+</body>
+</html>

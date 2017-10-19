@@ -1,2 +1,1 @@
-# tdr
-TDR projects
+Project for Weave, may make a good kata.

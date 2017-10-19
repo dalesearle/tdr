@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Siege Raider</title>
+        <link rel="stylesheet" type="text/css" href="siege.css">
+    </head>
+    <body>
+        <form action="/login" method="post">
+            <fieldset>
+                <legend align="center">Login</legend>
+                <label class="err_msg">{{.}}</label><br>
+                <label>Email:</label>
+                <input autocomplete="on" autofocus="on" name="email" required type="text" style="width: 50%"><br>
+                <label>Password:</label>
+                <input autocomplete="on" name="pwd" required type="password" style="width: 50%"><br>
+                <input type="submit" value="Login" style="width: 85%"><br>
+                <input type="submit" formaction="/create_account" value="Create Account" style="width: 85%">
+            </fieldset>
+        </form>
+    </body>
+</html>

@@ -22,7 +22,7 @@ func main() {
 	writeTravelStats(travelStats)
 }
 
-func createBaseSector() api.Sector {
+func createBaseSector() traveltime.Sector {
 	baseX, err := strconv.Atoi(os.Args[1])
 	if err != nil {
 		handleInputError()
@@ -31,7 +31,7 @@ func createBaseSector() api.Sector {
 	if err != nil {
 		handleInputError()
 	}
-	return *api.NewSector(baseX, baseY, "main")
+	return *traveltime.NewSector(baseX, baseY, "main")
 }
 
 func handleInputError() {
@@ -60,14 +60,14 @@ func getSectorData() []string {
 	return sectorData
 }
 
-func createTargetSectors(sectorData []string) []api.Sector {
-	sectors := []api.Sector{}
+func createTargetSectors(sectorData []string) []traveltime.Sector {
+	sectors := []traveltime.Sector{}
 	for _, data := range sectorData {
 		sd := strings.Split(data, ",")
 		x := atoi(sd[0])
 		y := atoi(sd[1])
 
-		sectors = append(sectors, *api.NewSector(x, y, strings.Trim(sd[2], "\n")))
+		sectors = append(sectors, *traveltime.NewSector(x, y, strings.Trim(sd[2], "\n")))
 	}
 	return sectors
 }
@@ -80,17 +80,17 @@ func atoi(str string) int {
 	return igr
 }
 
-func createTravelStats(baseSector api.Sector, targetSectors []api.Sector) api.TravelStats {
-	travelStats := api.NewTravelStatsSlice()
+func createTravelStats(baseSector traveltime.Sector, targetSectors []traveltime.Sector) traveltime.TravelStats {
+	travelStats := traveltime.NewTravelStatsSlice()
 	for _, targetSector := range targetSectors {
 		travelTime := time.Duration(baseSector.TravelTimeTo(&targetSector, 480))
-		travelStats = append(travelStats, *api.NewTravelStats(targetSector.GetX(), targetSector.GetY(), targetSector.GetName(), travelTime))
+		travelStats = append(travelStats, *traveltime.NewTravelStats(targetSector.GetX(), targetSector.GetY(), targetSector.GetName(), travelTime))
 	}
 	sort.Sort(travelStats)
 	return travelStats
 }
 
-func writeTravelStats(travelStats api.TravelStats) {
+func writeTravelStats(travelStats traveltime.TravelStats) {
 	path := os.Args[4] + "/tdr_travel.csv"
 	data, err := os.Create(path)
 	if err != nil {
@@ -109,7 +109,7 @@ func writeStatsHeader(writer *bufio.Writer) {
 	writer.WriteString("X,Y,Name,Travel Time\n")
 }
 
-func writeTravelStat(writer *bufio.Writer, travelStat *api.TravelStat) {
+func writeTravelStat(writer *bufio.Writer, travelStat *traveltime.TravelStat) {
 	writer.WriteString(strconv.Itoa(travelStat.GetX()))
 	writer.WriteString(",")
 	writer.WriteString(strconv.Itoa(travelStat.GetY()))
